@@ -28,13 +28,16 @@ chmod +x start.sh
 Le script va :
 - Créer un fichier `.env` à partir de `.env.example` s'il n'existe pas déjà
 - Vous proposer de réinitialiser les volumes si nécessaire (utile en cas de problème)
-- Démarrer les conteneurs
-- Vérifier la connexion à la base de données et corriger les permissions si nécessaire
+- Démarrer d'abord la base de données puis attendre qu'elle soit prête
+- Démarrer WordPress une fois la base de données initialisée
+- Vérifier et corriger les permissions de la base de données si nécessaire
 - Afficher les logs des conteneurs
+
+**Important** : Quand le script vous demande si vous voulez supprimer les volumes, répondez "o" pour nettoyer complètement l'installation si vous rencontrez des problèmes.
 
 ## Installation manuelle (Alternative)
 
-Si vous préférez configurer manuellement :
+Si vous préférez configurer manuellement, vous pouvez suivre ces étapes, mais la méthode avec le script est plus fiable :
 
 1. Créez un fichier `.env` à partir du modèle :
 ```bash
@@ -46,9 +49,11 @@ cp .env.example .env
 nano .env
 ```
 
-3. Lancez les conteneurs :
+3. Lancez les conteneurs en séquence :
 ```bash
-docker-compose up -d
+docker-compose up -d db      # Démarrer d'abord la base de données
+sleep 20                     # Attendre que la base de données soit prête
+docker-compose up -d         # Démarrer WordPress
 ```
 
 4. Accédez à WordPress dans votre navigateur à l'adresse :
@@ -59,24 +64,45 @@ http://localhost:7899
 
 ## Résolution des problèmes courants
 
-### Erreur "Error establishing a database connection"
+### Si le conteneur MariaDB ne démarre pas ou est "unhealthy"
 
-Si vous rencontrez cette erreur :
+Ce problème est résolu dans la dernière version. Si vous l'observez encore :
 
-1. Utilisez le script `start.sh` qui corrige automatiquement les problèmes de permission
-2. Ou exécutez manuellement :
+1. Mettez à jour votre dépôt vers la dernière version :
 ```bash
-docker-compose down -v  # Supprime les volumes pour repartir de zéro
-docker-compose up -d    # Redémarre les conteneurs
+git pull
 ```
 
-### Message "Access denied for user..."
+2. Supprimez complètement tous les conteneurs et volumes :
+```bash
+docker-compose down -v
+```
 
-Ce problème peut survenir si les informations d'identification ne sont pas correctes :
+3. Utilisez le script de démarrage amélioré :
+```bash
+chmod +x start.sh
+./start.sh
+```
 
-1. Vérifiez que les mots de passe dans le fichier `.env` sont simples (sans caractères spéciaux)
-2. Assurez-vous que `MYSQL_USER` et `MYSQL_PASSWORD` correspondent aux valeurs utilisées par WordPress
-3. Utilisez le script `start.sh` qui réinitialise les permissions de la base de données
+### Erreur "Error establishing a database connection"
+
+Si vous rencontrez cette erreur après l'installation :
+
+1. Vérifiez les logs pour identifier le problème :
+```bash
+docker-compose logs
+```
+
+2. Si vous voyez des erreurs "Access denied for user...", utilisez notre script de démarrage :
+```bash
+./start.sh
+```
+Répondez "o" à la question sur la suppression des volumes pour repartir de zéro.
+
+3. Si le problème persiste, vérifiez que le conteneur de base de données est bien en cours d'exécution :
+```bash
+docker-compose ps
+```
 
 ## Variables d'environnement
 
