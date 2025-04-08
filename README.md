@@ -35,9 +35,9 @@ docker-compose up -d
 
 5. Accédez à WordPress dans votre navigateur à l'adresse :
 ```
-http://localhost:80
+http://localhost:7899
 ```
-(ou le port que vous avez configuré dans votre fichier .env)
+(le port est configuré dans votre fichier .env)
 
 ## Variables d'environnement
 
@@ -56,7 +56,7 @@ Toutes les variables de configuration sont stockées dans le fichier `.env`. Voi
 - `WORDPRESS_DB_PASSWORD` : Mot de passe de l'utilisateur (par défaut : motdepassefort)
 
 ### Réseau
-- `WP_PORT` : Port sur lequel WordPress sera accessible (par défaut : 80)
+- `WP_PORT` : Port sur lequel WordPress sera accessible (par défaut : 7899)
 
 ### Volumes
 Les volumes suivants sont configurés pour la persistance des données :
