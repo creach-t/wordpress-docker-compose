@@ -1,0 +1,11 @@
+# Ignorer le fichier .env contenant les informations sensibles
+.env
+
+# Ignorer les fichiers de sauvegarde 
+*.bak
+*.swp
+*~
+
+# Ignorer les fichiers du système
+.DS_Store
+Thumbs.db
