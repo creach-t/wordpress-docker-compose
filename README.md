@@ -51,9 +51,9 @@ nano .env
 
 3. Lancez les conteneurs en séquence :
 ```bash
-docker-compose up -d db      # Démarrer d'abord la base de données
+docker compose up -d db      # Démarrer d'abord la base de données
 sleep 20                     # Attendre que la base de données soit prête
-docker-compose up -d         # Démarrer WordPress
+docker compose up -d         # Démarrer WordPress
 ```
 
 4. Accédez à WordPress dans votre navigateur à l'adresse :
@@ -75,7 +75,7 @@ git pull
 
 2. Supprimez complètement tous les conteneurs et volumes :
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 3. Utilisez le script de démarrage amélioré :
@@ -90,7 +90,7 @@ Si vous rencontrez cette erreur après l'installation :
 
 1. Vérifiez les logs pour identifier le problème :
 ```bash
-docker-compose logs
+docker compose logs
 ```
 
 2. Si vous voyez des erreurs "Access denied for user...", utilisez notre script de démarrage :
@@ -101,7 +101,7 @@ Répondez "o" à la question sur la suppression des volumes pour repartir de zé
 
 3. Si le problème persiste, vérifiez que le conteneur de base de données est bien en cours d'exécution :
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 ## Variables d'environnement
@@ -130,12 +130,12 @@ Les volumes suivants sont configurés pour la persistance des données :
 
 Pour arrêter les conteneurs sans perdre les données :
 ```bash
-docker-compose down
+docker compose down
 ```
 
 Pour arrêter les conteneurs et supprimer les volumes (perte de données) :
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 ## Sécurité
